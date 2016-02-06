@@ -1,0 +1,126 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure('2') do |config|
+  RAILS_MOUNT_SCRIPT = 'mount_rails_tmp.sh'
+
+  config.vm.box       = 'rosie_dev'
+  config.vm.host_name = 'dev-app'
+  
+  config.vm.provider 'virtualbox' do |v|
+    v.name   = 'dev-app'
+    v.memory = 2048
+    v.cpus   = 4
+  
+    v.customize ['modifyvm', :id, '--nictype1', 'Am79C973']
+    v.customize ['modifyvm', :id, '--natdnsproxy1', 'off']
+    v.customize ['modifyvm', :id, '--natdnshostresolver1', 'on']
+  
+    v.customize ['modifyvm', :id, '--nictype2', 'Am79C973']
+    v.customize ['modifyvm', :id, '--natdnsproxy2', 'off']
+    v.customize ['modifyvm', :id, '--natdnshostresolver2', 'on']
+  end
+  
+  config.ssh.username = 'vagrant'
+  config.ssh.password = 'vagrant'
+  config.ssh.port = 2222
+  
+  config.vm.network :private_network, ip: '33.33.13.37'
+
+  config.vm.network :forwarded_port, guest: 1337, host: 1337
+  config.vm.network :forwarded_port, guest: 3000, host: 3000
+  config.vm.network :forwarded_port, guest: 3001, host: 3001
+  config.vm.network :forwarded_port, guest: 5000, host: 5000
+  config.vm.network :forwarded_port, guest: 5432, host: 5432  
+  config.vm.network :forwarded_port, guest: 9000, host: 9000
+  config.vm.network :forwarded_port, guest: 8980, host: 8980  
+  
+  folder_mounts = []
+
+  # NOTE: We can only mount the root of all the Rosie shares because WinNFSd
+  #       has a bug with multiple shares.
+  #
+  # See: https://github.com/winnfsd/vagrant-winnfsd/issues/12)
+  #
+  folder_mounts.push({
+    :from => '../',
+    :to   => '/home/vagrant/host'
+  });
+  
+  if OS.windows?
+    Shares::Windows::setup(config, folder_mounts)
+  else
+    Shares::Common::setup(config, folder_mounts)
+  end
+end
+
+module Shares
+  ##
+  # Share-mounting logic that is common to both Windows and other systems like
+  # Linux and Mac OS X.
+  #
+  class Common
+    def self.setup(config, folder_mounts)
+      ## Filter out folders that don't exist
+      folder_mounts.select! { |a| Dir.exists?(a[:from]) }
+
+      folder_mounts.each do |project|
+        config.vm.synced_folder project[:from], project[:to],
+          :type => :nfs,
+          :mount_options => ['nolock,vers=3,udp,noatime,actimeo=1']
+      end
+      
+      config.vm.provision 'shell', run: 'always' do |s|
+        s.path = RAILS_MOUNT_SCRIPT
+      end
+
+      # These were the "legacy", slow VirtualBox shared-folder-based mounts.
+      # config.vm.synced_folder '../rosie_server', '/home/vagrant/rosie_server'
+      # config.vm.synced_folder '../rosie_retailers_web', '/home/vagrant/rosie_retailers_web'
+      # config.vm.synced_folder '../rosie_retailers_old', '/home/vagrant/rosie_retailers_old'
+      # config.vm.synced_folder '../rosie_loyalty', '/home/vagrant/rosie_loyalty'
+      # config.vm.synced_folder '../rosie_json_api', '/home/vagrant/rosie_json_api'
+      # config.vm.synced_folder '../rare', '/home/vagrant/rare'
+    end  
+  end
+
+  ##
+  # Windows-specific share-mounting logic.
+  #
+  class Windows < ::Shares::Common
+    def self.setup(config, folder_mounts)
+      if folder_mounts.length > 1
+        raise 'At this time, WinNFSd does not reliably support more than a single mount.'
+      end
+    
+      #config.winnfsd.logging = 'on'
+      config.winnfsd.uid = 1000
+      config.winnfsd.gid = 1000
+      config.winnfsd.halt_on_reload = 'on'
+
+      # Reorder folders for winnfsd plugin compatilibty
+      # see https://github.com/GM-Alex/vagrant-winnfsd/issues/12#issuecomment-78195957
+      folder_mounts.sort! { |a,b| a[:from].length <=> b[:from].length }
+
+      super
+    end
+  end
+end
+
+module OS
+  def OS.windows?
+    (/cygwin|mswin|mingw|bccwin|wince|emx/ =~ RUBY_PLATFORM) != nil
+  end
+
+  def OS.mac?
+    (/darwin/ =~ RUBY_PLATFORM) != nil
+  end
+
+  def OS.unix?
+    !OS.windows?
+  end
+
+  def OS.linux?
+    OS.unix? and not OS.mac?
+  end
+end
