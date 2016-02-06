@@ -85,9 +85,8 @@ At the time that this document has been written, Vagrant WinNFSd has several
 issues that can make it frustrating to use. Namely, the fact that the share
 list is not automatically reloaded when you reload your VM.
 
-Alternatively, you can install the release version as mentioned in the above
-section, and then replace the contents of the Vagrant WinNFSd plug-in (found
-under `C:\Users\%USERNAME%\.vagrant.d\gems\gems\vagrant-winnfsd-VERSION`, where
+Alternatively, install the release version as mentioned in the above section,
+and then replace the contents of the Vagrant WinNFSd plug-in (found under `C:\Users\%USERNAME%\.vagrant.d\gems\gems\vagrant-winnfsd-VERSION`, where
 VERSION is currently `1.1.0` for me) with the custom fork found in the `master`
 branch here:
 
