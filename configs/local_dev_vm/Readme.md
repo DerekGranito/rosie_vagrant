@@ -43,7 +43,7 @@ VM set-up](https://confluence.rosieapp.com/display/DEV/Rosie+Development+VM).
 7. Unpack the `package.box.zip` file into the `rosie_dev_vm` folder, so that
    you have `rosie_dev/rosie_dev_vm/package.box`.
 
-8. Open a command prompt / terminal window inside the `rosie_dev_rm` folder.
+8. Open a command prompt / terminal window inside the `rosie_dev_vm` folder.
 
 9. If you are running Windows, follow the special instructions for NFS in the
    section labeled ["Using NFS on Windows"](#Using_NFS_on_Windows_30) below,
