@@ -3,7 +3,7 @@ Provides a `Vagrantfile` and supporting scripts to run the Rosie environment
 using Vagrant on systems like Windows or OS X.
 
 ## Contributors:
-  - Mike Ryzweic (initial VM setup + instructions)
+  - Mike Ryzewic (initial VM setup + instructions)
   - Guy Paddock (NFS Support for Windows and OSX, revised instructions)
 
 ## How to Use
