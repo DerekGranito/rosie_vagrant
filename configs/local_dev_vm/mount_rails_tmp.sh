@@ -37,7 +37,6 @@ function mount_rails_projects {
         echo "  ${full_dest_path} => ${full_src_path}";
         
         # Ensure all the folders exist to avoid errors.
-        make_path_accessible "${full_src_path}";
         make_path_accessible "${full_dest_path}";
 
         # Actually do the mounting
