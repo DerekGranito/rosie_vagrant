@@ -12,11 +12,11 @@ The instructions for getting this version running are different, depending upon 
 ### If you already have a v1 VM
 If you already have a local Rosie development VM that is not yet using NFS mounts, you can upgrade it by following these steps:
 
-1. Navigate to your existing `rosie_dev_vm` folder (typically, `rosie_dev/rosie_dev_vm`).
-2. Rename your `Vagrantfile` to `Vagrantfile.bak`, to keep a back-up copy in case things don't work out.
-3. _(Optional)_ Make a copy of your `package.box` file to somewhere safe, to keep a back-up copy in case things don't work out. This is an optional step because its typically unnecessary, the file is quite large, and it can take a long time to copy.
-4. Clone this `rosie_vagrant` repo somewhere on your machine. It can even be in your `rosie_dev` folder, but **not inside the `rosie_dev_vm` folder**.
-5. Copy the contents of the folder in which this `Readme.md` file resides (from the root of the GIT repo, that's `rosie_vagrant/configs/local_dev_vm/`) into your `rosie_dev_vm` folder, where you navigated in step #1. This will create a new `Vagrantfile` in your `rosie_dev_vm` alongside the back-up copy you created in step #2, and add a few new files as well.
+1. Clone this `rosie_vagrant` repo from GitHub to somewhere on your machine. It can even be in your `rosie_dev` folder, but **not inside your `rosie_dev_vm` folder**.
+2. Navigate to your existing `rosie_dev_vm` folder (typically, `rosie_dev/rosie_dev_vm`).
+3. Rename your `Vagrantfile` to `Vagrantfile.bak`, to keep a back-up copy in case things don't work out.
+4. _(Optional)_ Make a copy of your `package.box` file to somewhere safe, to keep a back-up copy in case things don't work out. This is an optional step because its typically unnecessary, the file is quite large, and it can take a long time to copy.
+5. Copy the contents of the folder in which this `Readme.md` file resides (from the root of the GIT repo, that's the contents of `rosie_vagrant/configs/local_dev_vm`) into your `rosie_dev_vm` folder (where you navigated in step #2). This will create a new `Vagrantfile` in your `rosie_dev_vm` alongside the back-up copy you created in step #2, and add a few new files as well.
 
 6. Open a command prompt / terminal window inside the `rosie_dev_vm` folder.
 
@@ -24,11 +24,11 @@ If you already have a local Rosie development VM that is not yet using NFS mount
    section labeled ["Using NFS on Windows"](#using-nfs-on-windows) below,
    then proceed to the next step. On other OSes, you can skip this step.
 
-10. Launch the new Rosie dev VM:
+8. Launch the new Rosie dev VM:
 
         vagrant up
         
-11. If you get any errors, please troubleshoot them, and let your fellow
+9. If you get any errors, please troubleshoot them, and let your fellow
     developers know. :)
 
 ### If you're running the VM for the first time
