@@ -7,6 +7,31 @@ using Vagrant on systems like Windows or OS X.
   - Guy Paddock (NFS Support for Windows and OSX, revised instructions)
 
 ## How to Use
+The instructions for getting this version running are different, depending upon whether or not you've already got a local development VM running. This section includes steps for both scenarios.
+
+### If you already have a v1 VM
+If you already have a local Rosie development VM that is not yet using NFS mounts, you can upgrade it by following these steps:
+
+1. Navigate to your existing `rosie_dev_vm` folder (typically, `rosie_dev/rosie_dev_vm`).
+2. Rename your `Vagrantfile` to `Vagrantfile.bak`, to keep a back-up copy in case things don't work out.
+3. _(Optional)_ Make a copy of your `package.box` file to somewhere safe, to keep a back-up copy in case things don't work out. This is an optional step because its typically unnecessary, the file is quite large, and it can take a long time to copy.
+4. Clone this `rosie_vagrant` repo somewhere on your machine. It can even be in your `rosie_dev` folder, but **not inside the `rosie_dev_vm` folder**.
+5. Copy the contents of the folder in which this `Readme.md` file resides (from the root of the GIT repo, that's `rosie_vagrant/configs/local_dev_vm/`) into your `rosie_dev_vm` folder, where you navigated in step #1. This will create a new `Vagrantfile` in your `rosie_dev_vm` alongside the back-up copy you created in step #2, and add a few new files as well.
+
+6. Open a command prompt / terminal window inside the `rosie_dev_vm` folder.
+
+7. If you are running Windows, follow the special instructions for NFS in the
+   section labeled ["Using NFS on Windows"](#using-nfs-on-windows) below,
+   then proceed to the next step. On other OSes, you can skip this step.
+
+10. Launch the new Rosie dev VM:
+
+        vagrant up
+        
+11. If you get any errors, please troubleshoot them, and let your fellow
+    developers know. :)
+
+### If you're running the VM for the first time
 These steps complement steps found on Confluence for [getting your development 
 VM set-up](https://confluence.rosieapp.com/display/DEV/Rosie+Development+VM).
 
