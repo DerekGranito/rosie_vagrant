@@ -20,7 +20,7 @@ function mount_rails_projects {
   echo_blank_line;
 
   RAILS_PROJECT_PATHS=`find "${HOST_ROOT}" -maxdepth 2 -name 'Gemfile' -type f -exec grep --files-with-matches "'rails'" {} ';' | xargs -L 1 dirname`;
-  RAILS_MOUNT_FOLDERS=('tmp' 'log');
+  RAILS_MOUNT_FOLDERS=('tmp' 'log' 'public/uploads/tmp');
 
   for project_root in ${RAILS_PROJECT_PATHS[*]}; do
     project=`basename "${project_root}"`
