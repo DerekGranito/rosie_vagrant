@@ -80,7 +80,7 @@ VM set-up](https://confluence.rosieapp.com/display/DEV/Rosie+Development+VM).
 
 10. Use Vagrant to add the Rosie dev VM to your local VirtualBox install:
 
-        vagrant box add rosie_dev rosie_dev.box
+        vagrant box add rosie_dev package.box
 
 11. Launch the Rosie dev VM for the first time (_this typically takes 4-5
     minutes; do not worry_):
